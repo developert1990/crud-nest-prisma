@@ -1,3 +1,4 @@
+import { UpdateMovieDTO } from './dto/update-movie.dto';
 import { MovieEntity } from './entities/movie.entity';
 import { CreateMovieDTO } from './dto/create-movie.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -44,5 +45,10 @@ export class MovieService {
     });
     console.dir(movies, { depth: null });
     return movies;
+  }
+
+  async updateMovie(movieData: UpdateMovieDTO) {
+    console.log('movieData', movieData);
+    return 'updated';
   }
 }
