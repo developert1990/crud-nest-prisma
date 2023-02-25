@@ -1,7 +1,7 @@
 import { UpdateMovieDTO } from './dto/update-movie.dto';
 import { CreateMovieDTO } from './dto/create-movie.dto';
 import { MovieService } from './movie.service';
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('movie')
 export class MovieController {
@@ -17,8 +17,12 @@ export class MovieController {
     return this.movieService.createMovie(movieData);
   }
 
-  @Patch()
-  async update(@Body() movieData: UpdateMovieDTO): Promise<string> {
-    return this.movieService.updateMovie(movieData);
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() movieData: UpdateMovieDTO,
+  ): Promise<string> {
+    console.log('movieData', movieData);
+    return this.movieService.updateMovie(id, movieData);
   }
 }

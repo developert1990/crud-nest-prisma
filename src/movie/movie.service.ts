@@ -9,10 +9,7 @@ export class MovieService {
   constructor(private prisma: PrismaService) {}
   async createMovie(movieData: CreateMovieDTO): Promise<string> {
     const { title, year, votes, genreIds, description } = movieData;
-    const hasMovie = await this.findMovie(movieData.title);
-    if (hasMovie) {
-      throw new NotImplementedException('The movie already exists');
-    }
+
     (await this.prisma.movie.create({
       data: {
         title,
@@ -27,10 +24,10 @@ export class MovieService {
     return 'Movie has been created.';
   }
 
-  async findMovie(title: string) {
+  async findMovie(id: number) {
     const hasMovie = await this.prisma.movie.findUnique({
       where: {
-        title,
+        id,
       },
     });
 
@@ -47,8 +44,16 @@ export class MovieService {
     return movies;
   }
 
-  async updateMovie(movieData: UpdateMovieDTO) {
-    console.log('movieData', movieData);
-    return 'updated';
+  async updateMovie(id: number, movieData: UpdateMovieDTO) {
+    console.log('herer?');
+    const hasMovie = await this.findMovie(id);
+    if (!hasMovie) {
+      throw new NotImplementedException('The movie does not exists');
+    }
+    await this.prisma.movie.update({
+      where: { id },
+      data: { ...movieData },
+    });
+    return 'Movie is updated';
   }
 }
