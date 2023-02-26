@@ -12,17 +12,24 @@ import {
   Query,
 } from '@nestjs/common';
 import { Movie } from '@prisma/client';
+import { MovieEntity } from './entities/movie.entity';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
+  @ApiOperation({
+    summary: 'Filtered Movies API',
+    description: 'Get 5 filtered Movies',
+  })
+  @ApiOkResponse({ type: MovieEntity, isArray: true })
   async getMovies(
     @Query('offset') offset: number,
     @Query('sort') sort: string,
     @Query('orderby') order: string,
-  ) {
+  ): Promise<Movie[]> {
     return this.movieService.filterMovies(offset, sort, order);
   }
 
