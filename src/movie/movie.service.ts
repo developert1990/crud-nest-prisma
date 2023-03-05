@@ -30,20 +30,21 @@ export class MovieService {
     return movies;
   }
 
-  async createMovie(movieData: CreateMovieDTO): Promise<string> {
-    const { title, year, votes, genreIds, description } = movieData;
-
-    (await this.prisma.movie.create({
-      data: {
-        title,
-        year,
-        votes,
-        genres: {
-          connect: genreIds.map((genreId) => ({ id: genreId })) || [],
+  async createMovie(movieData: CreateMovieDTO[]): Promise<string> {
+    for (const { title, year, votes, genreIds, description } of movieData) {
+      (await this.prisma.movie.create({
+        data: {
+          title,
+          year,
+          votes,
+          genres: {
+            connect: genreIds.map((genreId) => ({ id: genreId })) || [],
+          },
+          description,
         },
-        description,
-      },
-    })) as MovieEntity;
+      })) as MovieEntity;
+    }
+
     return 'Movie has been created.';
   }
 
