@@ -30,21 +30,20 @@ export class MovieService {
     return movies;
   }
 
-  async createMovie(movieData: CreateMovieDTO[]): Promise<string> {
-    for (const { title, year, votes, genreIds, description } of movieData) {
-      (await this.prisma.movie.create({
-        data: {
-          title,
-          year,
-          votes,
-          genres: {
-            connect: genreIds.map((genreId) => ({ id: genreId })) || [],
-          },
-          description,
-        },
-      })) as MovieEntity;
-    }
+  async createMovie(movieData: CreateMovieDTO): Promise<string> {
+    const { title, year, votes, genreIds, description } = movieData;
 
+    (await this.prisma.movie.create({
+      data: {
+        title,
+        year,
+        votes,
+        genres: {
+          connect: genreIds.map((genreId) => ({ id: genreId })) || [],
+        },
+        description,
+      },
+    })) as MovieEntity;
     return 'Movie has been created.';
   }
 
@@ -65,8 +64,18 @@ export class MovieService {
     return 'Movie is deleted.';
   }
 
-  async searchMovies(title: string): Promise<Movie[]> {
+  async searchMovies(
+    title: string,
+    offset: number,
+    sort: string,
+    order: string,
+  ): Promise<Movie[]> {
     const movies = await this.prisma.movie.findMany({
+      skip: offset,
+      take: this.take,
+      orderBy: {
+        [sort]: order,
+      },
       where: {
         title: {
           contains: title,

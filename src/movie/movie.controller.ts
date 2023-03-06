@@ -34,7 +34,7 @@ export class MovieController {
   }
 
   @Post()
-  async create(@Body() movieData: CreateMovieDTO[]): Promise<string> {
+  async create(@Body() movieData: CreateMovieDTO): Promise<string> {
     return this.movieService.createMovie(movieData);
   }
 
@@ -51,9 +51,13 @@ export class MovieController {
     return this.movieService.deleteMovie(id);
   }
 
-  // TODO: update search API with offset and page.
   @Get('search')
-  async search(@Query('title') title: string): Promise<Movie[]> {
-    return this.movieService.searchMovies(title);
+  async search(
+    @Query('title') title: string,
+    @Query('offset') offset: number,
+    @Query('sort') sort: string,
+    @Query('orderby') order: string,
+  ): Promise<Movie[]> {
+    return this.movieService.searchMovies(title, offset, sort, order);
   }
 }
