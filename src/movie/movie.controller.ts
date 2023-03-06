@@ -52,7 +52,12 @@ export class MovieController {
   }
 
   @Get('search')
-  async search(@Query('title') title: string): Promise<Movie[]> {
-    return this.movieService.searchMovies(title);
+  async search(
+    @Query('title') title: string,
+    @Query('offset') offset: number,
+    @Query('sort') sort: string,
+    @Query('orderby') order: string,
+  ): Promise<Movie[]> {
+    return this.movieService.searchMovies(title, offset, sort, order);
   }
 }

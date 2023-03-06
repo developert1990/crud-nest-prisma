@@ -64,8 +64,18 @@ export class MovieService {
     return 'Movie is deleted.';
   }
 
-  async searchMovies(title: string): Promise<Movie[]> {
+  async searchMovies(
+    title: string,
+    offset: number,
+    sort: string,
+    order: string,
+  ): Promise<Movie[]> {
     const movies = await this.prisma.movie.findMany({
+      skip: offset,
+      take: this.take,
+      orderBy: {
+        [sort]: order,
+      },
       where: {
         title: {
           contains: title,
