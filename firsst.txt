@@ -1,5 +1,0 @@
-Hi This is first commit!
-
-2. This is second commit'
-
-3. Third commie!!!
