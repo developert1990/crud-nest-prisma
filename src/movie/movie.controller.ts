@@ -13,9 +13,10 @@ import {
 } from '@nestjs/common';
 import { Movie } from '@prisma/client';
 import { MovieEntity } from './entities/movie.entity';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('movie')
+@ApiTags('Movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 

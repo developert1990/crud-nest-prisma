@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MovieModule } from './movie/movie.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
-  imports: [MovieModule, PrismaModule],
+  imports: [MovieModule, PrismaModule, NotificationModule],
   controllers: [AppController],
   providers: [AppService],
 })
